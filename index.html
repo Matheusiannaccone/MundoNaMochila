@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turismo Fácil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="header-conteudo">
+    <h1>Mundo na Mochila</h1>
+    <div class="converter">1 USD ≈ 5.40 BRL</div>
+
+    <div class="filtro-container">
+      <button class="filtro-btn">Filtrar destinos</button>
+      <div class="filtro-opcoes">
+        <label><input type="checkbox" value="Brasil"> Brasil</label>
+        <label><input type="checkbox" value="Alemanha"> Alemanha</label>
+        <label><input type="checkbox" value="Espanha"> Espanha</label>
+      </div>
+    </div>
+
+    <button class="login-btn">Login</button>
+  </div>
+</header>
+
+  <main>
+    <div class="conteudo">
+      <div class="destino" data-pais="Brasil" onclick="location.href='rio.html'">
+        <h2>Rio de Janeiro - Brasil</h2>
+        <p>Conheça as praias icônicas, o Cristo Redentor e a vida noturna vibrante do Rio de Janeiro.</p>
+      </div>
+
+      <div class="destino" data-pais="Alemanha" onclick="location.href='luxemburgo.html'">
+        <h2>Luxemburgo - Alemanha</h2>
+        <p>Explore castelos históricos, paisagens verdes e a cultura germânica encantadora.</p>
+      </div>
+
+      <div class="destino" data-pais="Espanha" onclick="location.href='madrid.html'">
+        <h2>Madrid - Espanha</h2>
+        <p>A capital espanhola repleta de museus, praças famosas e uma gastronomia inesquecível.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const filtroBtn = document.querySelector(".filtro-btn");
+    const filtroOpcoes = document.querySelector(".filtro-opcoes");
+    const checkboxes = document.querySelectorAll(".filtro-opcoes input[type='checkbox']");
+    const destinos = document.querySelectorAll(".destino");
+
+    // Mostra/esconde as opções
+    filtroBtn.addEventListener("click", () => {
+      filtroOpcoes.classList.toggle("ativo");
+    });
+
+    // Aplica o filtro quando mudar seleção
+    checkboxes.forEach(cb => {
+      cb.addEventListener("change", () => {
+        const selecionados = Array.from(checkboxes)
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        destinos.forEach(destino => {
+          const pais = destino.getAttribute("data-pais");
+          if (selecionados.length === 0 || selecionados.includes(pais)) {
+            destino.style.display = "block";
+          } else {
+            destino.style.display = "none";
+          }
+        });
+      });
+    });
+
+    // Fecha o dropdown se clicar fora
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".filtro-container")) {
+        filtroOpcoes.classList.remove("ativo");
+      }
+    });
+  </script>
+</body>
+</html>
