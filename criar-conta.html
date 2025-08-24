@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="criar-conta.css">
+    <title>Criar Conta - Mundo na Mochila</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-conteudo">
+            <h1><a href="index.html">Mundo na Mochila</a></h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="register-container">
+            <h2>Criar Conta</h2>
+            <p class="register-description">
+                Junte-se à nossa comunidade e descubra destinos incríveis pelo mundo!
+            </p>
+
+            <form action="#" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Seu nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="sobrenome">Sobrenome:</label>
+                        <input type="text" id="sobrenome" name="sobrenome" required placeholder="Seu sobrenome">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label for="pais">País:</label>
+                        <select id="pais" name="pais" required>
+                            <option value="">Selecione seu país</option>
+                            <option value="BR">Brasil</option>
+                            <option value="US">Estados Unidos</option>
+                            <option value="PT">Portugal</option>
+                            <option value="ES">Espanha</option>
+                            <option value="FR">França</option>
+                            <option value="IT">Itália</option>
+                            <option value="DE">Alemanha</option>
+                            <option value="AR">Argentina</option>
+                            <option value="MX">México</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" required placeholder="Crie uma senha segura">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmar_senha">Confirmar Senha:</label>
+                    <input type="password" id="confirmar_senha" name="confirmar_senha" required
+                        placeholder="Digite a senha novamente">
+                </div>
+
+                <div class="password-requirements">
+                    <h4>🔒 Sua senha deve conter:</h4>
+                    <ul>
+                        <li>Pelo menos 8 caracteres</li>
+                        <li>Uma letra maiúscula e uma minúscula</li>
+                        <li>Pelo menos um número</li>
+                        <li>Um caractere especial (!@#$%&*)</li>
+                    </ul>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termos" name="termos" required>
+                    <label for="termos">
+                        Eu concordo com os <a href="#" target="_blank">Termos de Uso</a>
+                        e <a href="#" target="_blank">Política de Privacidade</a>
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">
+                        Quero receber ofertas especiais e novidades por e-mail
+                    </label>
+                </div>
+
+                <button type="submit" class="register-btn">Criar minha conta</button>
+            </form>
+
+            <div class="login-link">
+                Já tem uma conta? <a href="login.html">Faça login</a>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>
