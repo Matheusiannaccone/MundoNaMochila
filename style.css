@@ -10,15 +10,18 @@ header {
   background: #1e88e5;
   color: white;
   display: flex;
-  justify-content: center; /* centraliza dentro da tela */
+  justify-content: center;
+  /* centraliza dentro da tela */
   padding: 15px 30px;
 }
 
 .header-conteudo {
-  max-width: 700px; /* mesmo limite das caixas de destino */
+  max-width: 700px;
+  /* mesmo limite das caixas de destino */
   width: 100%;
   display: flex;
-  justify-content: space-between; /* espaça dentro do limite */
+  justify-content: space-between;
+  /* espaça dentro do limite */
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
@@ -45,6 +48,13 @@ header h1 {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background: #f57c00;
 }
 
 /* ----- FILTRO NO HEADER ----- */
@@ -73,7 +83,7 @@ header h1 {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   min-width: 150px;
 }
@@ -113,7 +123,7 @@ main {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s ease;
 }
@@ -130,8 +140,10 @@ main {
 /* ----- RESPONSIVIDADE ----- */
 @media (max-width: 768px) {
   .header-conteudo {
-    flex-direction: column;   /* empilha os elementos */
-    align-items: center;      /* centraliza tudo no mobile */
+    flex-direction: column;
+    /* empilha os elementos */
+    align-items: center;
+    /* centraliza tudo no mobile */
     text-align: center;
   }
 
@@ -142,7 +154,8 @@ main {
   .converter,
   .login-btn,
   .filtro-btn {
-    width: 100%; /* ocupa largura inteira no mobile */
+    width: 100%;
+    /* ocupa largura inteira no mobile */
   }
 
   .filtro-opcoes {
