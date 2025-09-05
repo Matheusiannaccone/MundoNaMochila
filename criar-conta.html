@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="criar-conta.css">
+    <link rel="stylesheet" href="styles/criar-conta.css">
     <title>Criar Conta - Mundo na Mochila</title>
 </head>
 
@@ -41,10 +41,6 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="telefone">Telefone:</label>
-                        <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
-                    </div>
-                    <div class="form-group">
                         <label for="pais">País:</label>
                         <select id="pais" name="pais" required>
                             <option value="">Selecione seu país</option>
@@ -73,16 +69,6 @@
                         placeholder="Digite a senha novamente">
                 </div>
 
-                <div class="password-requirements">
-                    <h4>🔒 Sua senha deve conter:</h4>
-                    <ul>
-                        <li>Pelo menos 8 caracteres</li>
-                        <li>Uma letra maiúscula e uma minúscula</li>
-                        <li>Pelo menos um número</li>
-                        <li>Um caractere especial (!@#$%&*)</li>
-                    </ul>
-                </div>
-
                 <div class="checkbox-group">
                     <input type="checkbox" id="termos" name="termos" required>
                     <label for="termos">
@@ -107,6 +93,8 @@
         </div>
     </main>
 
+
+    <script type="module" src="app.js"></script>
 </body>
 
 </html>

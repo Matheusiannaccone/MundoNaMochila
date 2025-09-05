@@ -1,0 +1,208 @@
+/* ----- BODY ----- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f5f5f5;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ----- HEADER ----- */
+header {
+  background: #1e88e5;
+  color: white;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 30px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header-conteudo {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* empilha título e conversor */
+  align-items: center;    /* centraliza horizontalmente */
+  gap: 15px;
+  margin: 0 auto;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 36px;
+  text-align: center;
+}
+
+.converter {
+  background: white;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.converter input,
+.converter select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.converter button {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.converter button:hover {
+  background: #f57c00;
+}
+
+#resultado {
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* ----- CONTEÚDO PRINCIPAL ----- */
+main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 30px 20px;
+}
+
+.conteudo {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ----- DESTINOS ----- */
+.destino {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.destino:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.destino h2 {
+  margin-top: 0;
+  color: #1e88e5;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.destino p {
+  line-height: 1.6;
+}
+
+/* ----- BLOG ----- */
+footer {
+  padding: 30px 20px;
+  background: #e3f2fd;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#blogForm {
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+}
+
+#blogForm input,
+#blogForm textarea {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#blogForm button {
+  background: #1e88e5;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#blogForm button:hover {
+  background: #1565c0;
+}
+
+#posts {
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post {
+  background: #f9f9f9;
+  padding: 12px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.post strong {
+  color: #1e88e5;
+}
+
+.post p {
+  margin: 5px 0 0 0;
+}
+
+/* ----- RESPONSIVIDADE ----- */
+@media (max-width: 768px) {
+  .header-conteudo {
+    text-align: center;
+  }
+
+  .converter {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .converter input,
+  .converter select,
+  .converter button {
+    width: 100%;
+  }
+
+  #blogForm {
+    width: 100%;
+  }
+
+  #posts {
+    width: 100%;
+  }
+}
