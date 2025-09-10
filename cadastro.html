@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/cadastro.css">
+    <title>Criar Conta - Mundo na Mochila</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-conteudo">
+            <h1><a href="index.html">Mundo na Mochila</a></h1>
+        </div>
+    </header>
+
+    <main>
+        <div class="register-container">
+            <h2>Cadastre-se</h2>
+            <p class="register-description">
+                Junte-se à nossa comunidade e descubra destinos incríveis pelo mundo!
+            </p>
+
+            <form id="cadastroForm">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" placeholder="Nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sobrenome">Sobrenome:</label>
+                    <input type="text" id="sobrenome" placeholder="Sobrenome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pais">País:</label>
+                    <select id="pais" required>
+                        <option value="">Selecione seu país</option>
+                        <option value="BR">Brasil</option>
+                        <option value="US">Estados Unidos</option>
+                        <option value="PT">Portugal</option>
+                        <option value="ES">Espanha</option>
+                        <option value="FR">França</option>
+                        <option value="IT">Itália</option>
+                        <option value="DE">Alemanha</option>
+                        <option value="AR">Argentina</option>
+                        <option value="MX">México</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" placeholder="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" placeholder="Senha" required>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="termos" required>
+                    <label for="termos">
+                        Marque esta caixa para aceitar os termos de serviço e a política de privacidade
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter">
+                    <label for="newsletter">
+                        Quero receber ofertas especiais e novidades por e-mail
+                    </label>
+                </div>
+
+                <button class="register-btn" type="submit">Cadastrar</button>
+            </form>
+
+            <div class="login-link">
+                Já tem uma conta? <a href="login.html">Faça login</a>
+            </div>
+        </div>
+    </main>
+
+
+    <script type="module" src="firebase/cadastro.js"></script>
+</body>
+
+</html>

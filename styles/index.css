@@ -57,6 +57,25 @@ header h1 {
   background: #f57c00;
 }
 
+.logout-btn {
+  background: #e53935;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c62828;
+}
+
+
+
 /* ----- FILTRO NO HEADER ----- */
 .filtro-container {
   position: relative;
