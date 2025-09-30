@@ -13,7 +13,6 @@
     <div class="header-conteudo">
       <h1>Mundo na Mochila</h1>
       <div class="converter">1 USD ≈ 5.40 BRL</div>
-
       <div class="filtro-container">
         <button class="filtro-btn">Filtrar destinos</button>
         <div class="filtro-opcoes">
@@ -22,8 +21,12 @@
           <label><input type="checkbox" value="Espanha"> Espanha</label>
         </div>
       </div>
-
-      <a href="login.html" class="login-btn">Login</a>
+      <!-- Links de usuário -->
+      <div class="user-actions">
+        <a href="painel.html" class="painel-btn" id="painelBtn" style="display: none;">👤 Meu Painel</a>
+        <a href="login.html" class="login-btn" id="loginBtn">Login</a>
+        <button id="logoutBtn" class="logout-btn" style="display: none;">Logout</button>
+      </div>
     </div>
   </header>
 

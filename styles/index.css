@@ -74,6 +74,29 @@ header h1 {
   background: #c62828;
 }
 
+.user-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.painel-btn {
+  background: #9c27b0;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.painel-btn:hover {
+  background: #7b1fa2;
+}
+
 
 
 /* ----- FILTRO NO HEADER ----- */
@@ -168,6 +191,18 @@ main {
 
   header h1 {
     font-size: 35x;
+  }
+
+  .user-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+  }
+
+  .painel-btn,
+  .login-btn {
+    width: 100%;
+    text-align: center;
   }
 
   .converter,
