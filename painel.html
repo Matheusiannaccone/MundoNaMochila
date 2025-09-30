@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/painel.css">
+    <title>Meu Painel - Mundo na Mochila</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-conteudo">
+            <h1><a href="index.html">Mundo na Mochila</a></h1>
+            <div class="header-actions">
+                <span id="welcomeText">Carregando...</span>
+                <button id="logoutBtn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="painel-container">
+            <div class="painel-header">
+                <h2>🔧 Meu Painel</h2>
+                <p class="painel-description">
+                    Gerencie suas informações pessoais e preferências de conta
+                </p>
+            </div>
+
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" class="loading">
+                <p>Carregando suas informações...</p>
+            </div>
+
+            <!-- Mensagem de Erro -->
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <p>Erro ao carregar dados. <button onclick="location.reload()">Tentar novamente</button></p>
+            </div>
+
+            <!-- Main form -->
+            <form id="painelForm" style="display: none;">
+                <div class="form-section">
+                    <h3>Informações Pessoais</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" placeholder="Seu nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sobrenome">Sobrenome:</label>
+                            <input type="text" id="sobrenome" placeholder="Seu sobrenome" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pais">País:</label>
+                        <select id="pais" required>
+                            <option value="">Selecione seu país</option>
+                            <option value="BR">Brasil</option>
+                            <option value="US">Estados Unidos</option>
+                            <option value="PT">Portugal</option>
+                            <option value="ES">Espanha</option>
+                            <option value="FR">França</option>
+                            <option value="IT">Itália</option>
+                            <option value="DE">Alemanha</option>
+                            <option value="AR">Argentina</option>
+                            <option value="MX">México</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter">
+                        <label for="newsletter">
+                            Quero receber ofertas especiais e novidades por e-mail
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Informações da Conta</h3>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" placeholder="Seu email" required>
+                        <small class="form-note">Alterações no email requerem nova verificação</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Alterar Senha</h3>
+                    <p class="section-description">Deixe em branco se não deseja alterar a senha</p>
+                    
+                    <div class="form-group">
+                        <label for="senhaAtual">Senha Atual:</label>
+                        <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="novaSenha">Nova Senha:</label>
+                            <input type="password" id="novaSenha" placeholder="Nova senha (min. 6 caracteres)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmarSenha">Confirmar Nova Senha:</label>
+                            <input type="password" id="confirmarSenha" placeholder="Confirme a nova senha">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-btn" id="saveBtn">
+                        Salvar Alterações
+                    </button>
+                    <button type="button" class="cancel-btn" onclick="loadUserData()">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+
+            <!-- Estatísticas da Conta -->
+            <div id="accountStats" class="account-stats" style="display: none;">
+                <h3>Estatísticas da Conta</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Membro desde:</span>
+                        <span class="stat-value" id="memberSince">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Posts publicados:</span>
+                        <span class="stat-value" id="postsCount">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Comentários feitos:</span>
+                        <span class="stat-value" id="commentsCount">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zona de Perigo -->
+            <div class="danger-zone">
+                <h3>Zona de Perigo</h3>
+                <p>Ações irreversíveis da conta</p>
+                <button type="button" class="danger-btn" onclick="confirmDeleteAccount()">
+                    Excluir Conta
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mensagem de Erro/Sucesso -->
+    <div id="successMessage" class="message success" style="display: none;">
+        <p>Alterações salvas com sucesso!</p>
+    </div>
+
+    <div id="errorUpdateMessage" class="message error" style="display: none;">
+        <p>Erro ao salvar alterações. Tente novamente.</p>
+    </div>
+
+    <script type="module" src="firebase/painel.js"></script>
+</body>
+
+</html>

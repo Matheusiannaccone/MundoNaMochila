@@ -76,3 +76,45 @@ document.addEventListener("click", (e) => {
     filtroOpcoes.classList.remove("ativo");
   }
 });
+
+// 🔹 Elementos do painel
+const painelBtn = document.getElementById("painelBtn");
+const loginBtn = document.getElementById("loginBtn");
+
+// 🔹 Atualizar onAuthStateChanged para mostrar/esconder painel
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Usuário logado
+    if (painelBtn) painelBtn.style.display = "inline-block";
+    if (loginBtn) loginBtn.style.display = "none";
+    
+    // Só cria o botão de logout se ainda não existir
+    if (!document.querySelector(".logout-btn")) {
+      const logoutBtn = document.createElement("button");
+      logoutBtn.textContent = "Logout";
+      logoutBtn.classList.add("logout-btn");
+      logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+        // Restaurar estado original
+        if (painelBtn) painelBtn.style.display = "none";
+        if (loginBtn) loginBtn.style.display = "inline-block";
+        logoutBtn.remove();
+      });
+
+      // Adicionar após o painel btn
+      if (painelBtn && painelBtn.parentNode) {
+        painelBtn.parentNode.appendChild(logoutBtn);
+      }
+    }
+  } else {
+    // Usuário não logado
+    if (painelBtn) painelBtn.style.display = "none";
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    
+    // Remover botão de logout se existir
+    const existingLogoutBtn = document.querySelector(".logout-btn");
+    if (existingLogoutBtn) {
+      existingLogoutBtn.remove();
+    }
+  }
+});
