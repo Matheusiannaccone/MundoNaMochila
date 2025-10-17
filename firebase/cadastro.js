@@ -1,30 +1,7 @@
 // 🔹 Importações Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, connectAuthEmulator } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getDatabase, ref, set, connectDatabaseEmulator } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-// 🔹 Configuração Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyD5QDVLvFD3pQNHctIZWLYhc5G5RdOEf08",
-  authDomain: "mundo-na-mochila-89257.firebaseapp.com",
-  databaseURL: "https://mundo-na-mochila-89257-default-rtdb.firebaseio.com",
-  projectId: "mundo-na-mochila-89257",
-  storageBucket: "mundo-na-mochila-89257.firebasestorage.app",
-  messagingSenderId: "172465630207",
-  appId: "1:172465630207:web:1e47669ca76df6044cd5ca",
-  measurementId: "G-YBKG3VSW9F"
-};
-
-// 🔹 Inicialização Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-
-// 🔹 Conectar ao emulador se estiver em localhost
-if(location.hostname === "localhost"){
-    connectAuthEmulator(auth, "http://localhost:9099");
-    connectDatabaseEmulator(db, "localhost", 9000);
-}
+import { dbRealtime, auth } from "./config.js";
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const cadastroForm = document.getElementById("cadastroForm");
 
@@ -42,7 +19,7 @@ async function cadastrarUsuario(event) {
     const newsletter = document.getElementById('newsletter').checked;
 
     if (!nome || !sobrenome|| !pais || !email || !senha) {
-        alert("Por favor, preencha todos os campos.");
+        alert("Por favor, preencha todos os campos obrigatórios.");
         return;
     }
 
@@ -57,13 +34,15 @@ async function cadastrarUsuario(event) {
         const userID = userCredential.user.uid;
 
         // 🔹 Salvar dados no Realtime Database
-        await set(ref(db, "usuarios/" + userID), {
+        await set(ref(dbRealtime, "usuarios/" + userID), {
             nome: nome,
             sobrenome: sobrenome,
             pais: pais,
             email: email,
             termos: termos,
-            newsletter: newsletter
+            newsletter: newsletter,
+            tipo: "usuarioPadrao",
+            create_at: new Date().toISOString()
         });
 
         console.log("Usuário cadastrado com sucesso!");

@@ -1,13 +1,15 @@
-/* ----- RESET ----- */
+/* =========================
+   RESET E BASE
+========================= */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 /* ----- BODY ----- */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   background: #f5f5f5;
   color: #333;
   display: flex;
@@ -15,13 +17,16 @@ body {
   align-items: center;
   padding-left: 240px;
   transition: padding-left 0.3s ease;
+  line-height: 1.6;
 }
 
 body.navbar-closed {
   padding-left: 0;
 }
 
-/* ===== BOTÃO TOGGLE NAVBAR ===== */
+/* =========================
+   NAVBAR LATERAL
+========================= */
 .navbar-toggle {
   position: fixed;
   left: 250px;
@@ -51,7 +56,6 @@ body.navbar-closed .navbar-toggle {
   left: 10px;
 }
 
-/* ===== NAVBAR LATERAL ===== */
 .navbar-lateral {
   position: fixed;
   left: 0;
@@ -136,7 +140,9 @@ body.navbar-closed .navbar-toggle {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-/* ----- HEADER ----- */
+/* =========================
+   HEADER
+========================= */
 header {
   background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
   color: white;
@@ -154,7 +160,6 @@ header {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin: 0 auto;
 }
 
 header h1 {
@@ -162,7 +167,6 @@ header h1 {
   font-size: 38px;
   text-align: center;
   font-weight: 700;
-  letter-spacing: 0.5px;
 }
 
 header h1 a {
@@ -175,18 +179,30 @@ header h1 a:hover {
   opacity: 0.9;
 }
 
-.converter {
-  background: rgba(255, 255, 255, 0.95);
-  color: #333;
-  padding: 18px 20px;
-  border-radius: 10px;
-  font-size: 14px;
+/* =========================
+   CONVERSOR + MEU PAINEL
+========================= */
+.converter-container {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.converter {
+  flex: 1 1 400px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .converter input,
@@ -217,7 +233,29 @@ header h1 a:hover {
 .converter button:hover {
   background: #f57c00;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.user-actions {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-actions a {
+  display: block;
+  text-align: center;
+  padding: 10px 16px;
+  background: #1e88e5;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.user-actions a:hover {
+  background: #1565c0;
 }
 
 #resultado {
@@ -228,7 +266,9 @@ header h1 a:hover {
   text-align: center;
 }
 
-/* ----- CONTEÚDO PRINCIPAL ----- */
+/* =========================
+   MAIN / CONTEÚDO
+========================= */
 main {
   display: flex;
   justify-content: center;
@@ -243,7 +283,17 @@ main {
   margin: 0 auto;
 }
 
-/* ----- DESTINOS ----- */
+.conteudo img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   DESTINOS
+========================= */
 .destino {
   background: white;
   border-radius: 12px;
@@ -259,10 +309,20 @@ main {
 }
 
 .destino h2 {
-  margin-top: 0;
   color: #1e88e5;
   font-size: 22px;
   margin-bottom: 12px;
+}
+
+.item-bloco {
+  margin-bottom: 20px; /* espaçamento maior entre tópicos */
+  line-height: 1.6;
+}
+
+.item-bloco hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 8px 0;
 }
 
 .destino p {
@@ -270,7 +330,9 @@ main {
   color: #555;
 }
 
-/* ----- BLOG ----- */
+/* =========================
+   BLOG
+========================= */
 footer {
   padding: 30px 20px;
   background: #e3f2fd;
@@ -279,35 +341,34 @@ footer {
   justify-content: center;
 }
 
-#blogForm {
-  max-width: 700px;
+.destino input,
+.destino textarea {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 0 auto;
-}
-
-#blogForm input,
-#blogForm textarea {
   font-family: Arial, sans-serif;
   font-size: 14px;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-#blogForm button {
+.destino textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.destino button {
   background: #1e88e5;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: normal;
   transition: background 0.3s ease;
 }
 
-#blogForm button:hover {
+.destino button:hover {
   background: #1565c0;
 }
 
@@ -327,25 +388,91 @@ footer {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.post strong {
+.post h3 {
   color: #1e88e5;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .post p {
   margin: 5px 0 0 0;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* =========================
+   ADMIN BUTTON
+========================= */
+#adminControls {
+  display: none;
+  text-align: center;
+}
+
+#editarDestinoBtn {
+  background: #1e88e5;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+  margin: 20px auto;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#editarDestinoBtn:hover {
+  background-color: #1565c0;
+  transform: translateY(-2px);
+}
+
+#introducao {
+  background: #e3f2fd;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#introducao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+
+#introducao h2 {
+  color: #1e88e5;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+#textoIntroducao {
+  color: #555;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
 @media (max-width: 768px) {
   body {
     padding-left: 0;
   }
 
+  #editarDestinoBtn {
+    max-width: 100%;
+    padding: 12px;
+  }
+
   .navbar-toggle {
     display: none;
   }
-  
-  /* Navbar vira horizontal no mobile */
+
   .navbar-lateral {
     position: sticky;
     top: 0;
@@ -361,25 +488,25 @@ footer {
     background: linear-gradient(90deg, #1e88e5 0%, #1565c0 100%);
     transform: translateX(0) !important;
   }
-  
+
   .navbar-lateral h3 {
     display: none;
   }
-  
+
   .nav-menu {
     display: flex;
     padding: 0;
   }
-  
+
   .nav-menu li {
     margin: 0;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .nav-menu li:last-child {
     border-right: none;
   }
-  
+
   .nav-link {
     flex-direction: column;
     padding: 12px 20px;
@@ -390,73 +517,50 @@ footer {
     border-left: none;
     border-bottom: 3px solid transparent;
   }
-  
+
   .nav-link:hover {
     padding-left: 20px;
     background: rgba(255, 255, 255, 0.15);
     border-bottom-color: white;
   }
-  
+
   .nav-link.active {
     border-left: none;
     border-bottom-color: #ffd54f;
   }
-  
+
   .nav-link.active::before {
     display: none;
   }
-  
+
   .nav-icon {
     font-size: 22px;
   }
-  
-  /* Customizar scrollbar horizontal no mobile */
-  .navbar-lateral::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .navbar-lateral::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar-lateral::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-  }
-  
-  .navbar-lateral::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
-  }
 
-  /* Header e conteúdo */
   .header-conteudo {
     text-align: center;
   }
 
-  .converter {
-    width: 100%;
+  .converter-container {
     flex-direction: column;
     align-items: stretch;
   }
 
+  .converter {
+    flex: 1 1 100%;
+  }
+
   .converter input,
   .converter select,
-  .converter button {
+  .converter button,
+  .user-actions a {
     width: 100%;
   }
 
-  #blogForm {
-    width: 100%;
-  }
-
-  #posts {
-    width: 100%;
-  }
-  
   .destino {
     padding: 20px;
   }
-  
+
   main {
     min-height: auto;
   }
@@ -465,4 +569,9 @@ footer {
 /* ----- SCROLL SUAVE ----- */
 html {
   scroll-behavior: smooth;
+}
+
+h2 {
+  margin-top: 20px;
+  color: #333;
 }

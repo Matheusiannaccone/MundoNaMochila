@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destino - Mundo na Mochila</title>
+  <link rel="stylesheet" href="../styles/destino.css">
+</head>
+
+<body data-destino="default">
+
+  <!-- BOTÃO DE MENU -->
+  <button class="navbar-toggle" id="navbarToggle">☰</button>
+
+  <!-- NAVBAR LATERAL -->
+  <nav class="navbar-lateral" id="navbar">
+    <h3>📍 Menu</h3>
+    <ul class="nav-menu">
+      <li><a href="#introducao" class="nav-link"><span class="nav-icon">ℹ️</span><span>Introdução</span></a></li>
+      <li><a href="#pontosTuristicos" class="nav-link"><span class="nav-icon">🗿</span><span>Pontos Turísticos</span></a></li>
+      <li><a href="#alimentacao" class="nav-link"><span class="nav-icon">🍽️</span><span>Alimentação</span></a></li>
+      <li><a href="#transporte" class="nav-link"><span class="nav-icon">🚌</span><span>Transporte</span></a></li>
+      <li><a href="#blog" class="nav-link"><span class="nav-icon">📝</span><span>Blog</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-conteudo">
+      <h1 id="tituloDestino">
+        <a href="./index.html" id="tituloLink">Destino</a>
+      </h1>
+
+      <!-- CONTAINER CONVERSOR + MEU PAINEL -->
+      <div class="converter-container">
+        <div class="converter">
+          <input type="number" id="valor" placeholder="Valor" step="0.01">
+          <select id="de">
+            <option value="BRL">BRL</option>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+          →
+          <select id="para">
+            <option value="USD">USD</option>
+            <option value="BRL">BRL</option>
+            <option value="EUR">EUR</option>
+          </select>
+          <button onclick="converterMoeda()">Converter</button>
+          <p id="resultado"></p>
+        </div>
+
+        <div class="user-actions">
+          <a href="../login.html" class="login-btn" id="loginBtn">Login</a>
+          <a href="../painel.html" class="painel-btn" id="painelBtn" style="display:none;">Meu Painel</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTROLE ADMINISTRATIVO -->
+  <div id="adminControls">
+    <button id="editarDestinoBtn">Editar destino</button>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main>
+    <div class="conteudo">
+      <img id="imagemDestino" src="" alt="Imagem do destino">
+      <p id="descricaoDestino"></p>
+
+      <!-- NOVA SEÇÃO DE INTRODUÇÃO -->
+      <section id="introducao" class="destino">
+        <h2>Introdução</h2>
+        <p id="textoIntroducao">Explore o destino e descubra tudo sobre ele.</p>
+      </section>
+
+      <section id="pontosTuristicos" class="destino">
+        <h2>Pontos Turísticos</h2>
+        <ul></ul>
+      </section>
+
+      <section id="alimentacao" class="destino">
+        <h2>Alimentação</h2>
+        <ul></ul>
+      </section>
+
+      <section id="transporte" class="destino">
+        <h2>Transporte</h2>
+        <ul></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- BLOG DE USUÁRIOS -->
+  <footer id="blog">
+    <div class="conteudo">
+      <div class="destino">
+        <h2>Blog dos Viajantes</h2>
+
+        <input type="text" id="title" placeholder="Título do post">
+        <textarea id="content" placeholder="Escreva seu post..."></textarea>
+        <button id="postBtn">Publicar</button>
+
+        <div id="posts"></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DA NAVBAR -->
+  <script>
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbar = document.getElementById('navbar');
+    const body = document.body;
+
+    navbarToggle.addEventListener('click', () => {
+      navbar.classList.toggle('closed');
+      body.classList.toggle('navbar-closed');
+    });
+
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('main .destino, #blog');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (window.pageYOffset >= sectionTop - 150) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+  <!-- SCRIPT FIREBASE -->
+  <script type="module" src="../firebase/destino.js"></script>
+</body>
+</html>

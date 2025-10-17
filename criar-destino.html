@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Novo Destino</title>
+  <link rel="stylesheet" href="./styles/criar-destino.css">
+</head>
+<body>
+  <header>
+    <h1>Criar Novo Destino</h1>
+  </header>
+
+  <main>
+    <form id="formDestino" enctype="multipart/form-data">
+      <!-- IMAGEM DE CAPA -->
+      <h2>Imagem de capa</h2>
+      <input type="file" id="imagemCapa" accept="image/*" required>
+      <img id="previewImagem" alt="Pré-visualização da imagem" style="display:none; max-width:100%; border-radius:10px;">
+
+      <!-- INFORMAÇÕES BÁSICAS -->
+      <h2>Informações básicas</h2>
+      <label for="cidade">Nome da cidade:</label>
+      <input type="text" id="cidade" required>
+
+      <label for="pais">Nome do país:</label>
+      <input type="text" id="pais" required>
+
+      <label for="moeda">Moeda do país:</label>
+      <select id="moeda" required>
+        <option value="">Selecione uma moeda</option>
+        <option value="USD">Dólar (USD)</option>
+        <option value="EUR">Euro (EUR)</option>
+        <option value="GBP">Libra (GBP)</option>
+        <option value="BRL">Real (BRL)</option>
+        <option value="JPY">Iene (JPY)</option>
+        <option value="CAD">Dólar Canadense (CAD)</option>
+        <option value="AUD">Dólar Australiano (AUD)</option>
+        <option value="CHF">Franco Suíço (CHF)</option>
+        <option value="CNY">Yuan (CNY)</option>
+        <option value="MXN">Peso Mexicano (MXN)</option>
+      </select>
+
+      <!-- INTRODUÇÃO -->
+      <h2>Introdução</h2>
+      <textarea id="introducao" placeholder="Escreva uma breve introdução sobre o destino..." rows="4"></textarea>
+
+      <!-- PONTOS TURÍSTICOS -->
+      <h2>Pontos turísticos</h2>
+      <div id="pontosTuristicosContainer"></div>
+      <button type="button" class="add-btn" id="addPontoTuristico">+ Adicionar ponto turístico</button>
+
+      <!-- ALIMENTAÇÃO -->
+      <h2>Alimentação</h2>
+      <div id="alimentacaoContainer"></div>
+      <button type="button" class="add-btn" id="addAlimentacao">+ Adicionar alimentação</button>
+
+      <!-- TRANSPORTE -->
+      <h2>Transporte</h2>
+      <div id="transporteContainer"></div>
+      <button type="button" class="add-btn" id="addTransporte">+ Adicionar transporte</button>
+
+      <p id="mensagem"></p>
+      <button type="submit" class="save-btn">Salvar destino</button>
+      <button type="button" id="voltarBtn" class="back-btn">Voltar</button>
+    </form>
+  </main>
+
+  <script type="module" src="./firebase/criar-destino.js"></script>
+</body>
+</html>

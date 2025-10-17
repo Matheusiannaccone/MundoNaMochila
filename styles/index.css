@@ -179,6 +179,47 @@ main {
   color: #1e88e5;
 }
 
+.destino img {
+  width: 100%;
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ----- BOTÕES DE ADMIN / SUPERADMIN ----- */
+/* Botão de criar nova página de destino */
+#criarPaginaBtn {
+  background: #1e88e5; /* mesma cor do header */
+  color: white;
+  padding: 12px 0; /* mais confortável que 8px */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 0 auto 20px auto; /* centraliza e adiciona margem inferior */
+  display: block;
+  width: 100%; /* ocupa toda a largura do container .conteudo */
+  max-width: 700px; /* mesma largura máxima do .destino */
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#criarPaginaBtn:hover {
+  background: #1565c0;
+  transform: scale(1.02); /* efeito de hover igual aos destinos */
+}
+
+/* ----- CONTAINER DOS BOTÕES DE ADMIN ----- */
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
 /* ----- RESPONSIVIDADE ----- */
 @media (max-width: 768px) {
   .header-conteudo {

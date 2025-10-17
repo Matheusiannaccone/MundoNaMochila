@@ -1,73 +1,102 @@
-// header.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut, connectAuthEmulator } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { auth, dbFirestore } from "./config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { verificarUsuario } from "./verificar-usuario.js";
 
-// 🔹 Configuração Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyD5QDVLvFD3pQNHctIZWLYhc5G5RdOEf08",
-  authDomain: "mundo-na-mochila-89257.firebaseapp.com",
-  projectId: "mundo-na-mochila-89257",
-  storageBucket: "mundo-na-mochila-89257.firebasestorage.app",
-  messagingSenderId: "172465630207",
-  appId: "1:172465630207:web:1e47669ca76df6044cd5ca",
-  measurementId: "G-YBKG3VSW9F"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// 🔹 Conectar ao emulador se estiver em localhost
-if (location.hostname === "localhost") {
-  connectAuthEmulator(auth, "http://localhost:9099");
-}
-
-// 🔹 Elementos do DOM
-const loginLink = document.querySelector(".login-btn");
+// Elementos do DOM
+const painelBtn = document.getElementById("painelBtn");
+const loginBtn = document.getElementById("loginBtn");
 const filtroBtn = document.querySelector(".filtro-btn");
 const filtroOpcoes = document.querySelector(".filtro-opcoes");
-const checkboxes = document.querySelectorAll(".filtro-opcoes input[type='checkbox']");
-const destinos = document.querySelectorAll(".destino");
+const destinosContainer = document.querySelector(".conteudo");
 
-// 🔹 Login / Logout
-onAuthStateChanged(auth, (user) => {
+// 🔹 Observa autenticação
+onAuthStateChanged(auth, async (user) => {
   if (user) {
-    // Só cria o botão se ainda não existir
-    if (!document.querySelector(".logout-btn")) {
-      const logoutBtn = document.createElement("button");
-      logoutBtn.textContent = "Logout";
-      logoutBtn.classList.add("logout-btn"); // diferente de login-btn
-      logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-        // Troca de volta para link de login
-        logoutBtn.replaceWith(loginLink);
-      });
+    const tipo = await verificarUsuario();
+    painelBtn.style.display = "inline-block";
+    loginBtn.style.display = "none";
 
-      loginLink.replaceWith(logoutBtn);
+    if (tipo === "admin" || tipo === "superAdmin") {
+      if (!document.getElementById("criarPaginaBtn")) {
+        const criarPaginaBtn = document.createElement("button");
+        criarPaginaBtn.id = "criarPaginaBtn";
+        criarPaginaBtn.textContent = "Criar nova página de destino";
+        criarPaginaBtn.addEventListener("click", () => {
+          window.location.href = "criar-destino.html";
+        });
+        destinosContainer.prepend(criarPaginaBtn);
+      }
     }
   } else {
-    // Garante que sempre tenha o link de login
-    if (!document.querySelector(".login-btn")) {
-      document.querySelector(".logout-btn")?.replaceWith(loginLink);
-    }
+    painelBtn.style.display = "none";
+    loginBtn.style.display = "inline-block";
+    document.getElementById("criarPaginaBtn")?.remove();
   }
 });
 
-// 🔹 Filtro de destinos
-filtroBtn.addEventListener("click", () => {
-  filtroOpcoes.classList.toggle("ativo");
-});
+// 🔹 Carregar destinos do Firestore
+async function carregarDestinos() {
+  destinosContainer.innerHTML = ""; // limpa conteúdo
 
-checkboxes.forEach(cb => {
-  cb.addEventListener("change", () => {
-    const selecionados = Array.from(checkboxes)
-      .filter(cb => cb.checked)
-      .map(cb => cb.value);
+  const destinosRef = collection(dbFirestore, "destinos");
+  const q = query(destinosRef, orderBy("criadoEm", "desc"));
+  const snapshot = await getDocs(q);
 
-    destinos.forEach(destino => {
-      const pais = destino.getAttribute("data-pais");
-      destino.style.display = (selecionados.length === 0 || selecionados.includes(pais)) ? "block" : "none";
+  // Armazena os países para filtro
+  const paisesSet = new Set();
+
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    paisesSet.add(data.pais);
+
+    const div = document.createElement("div");
+    div.classList.add("destino");
+    div.setAttribute("data-pais", data.pais);
+
+    div.addEventListener("click", () => {
+      window.location.href = `destino.html?id=${doc.id}`;
+    });
+
+    div.innerHTML = `
+      ${data.imagemURL ? `<img src="${data.imagemURL}" alt="${data.cidade}" />` : ""}
+      <h2>${data.cidade} - ${data.pais}</h2>
+      <p>${data.introducao || "Conheça este incrível destino!"}</p>
+    `;
+
+    destinosContainer.appendChild(div);
+  });
+
+  // Preencher opções do filtro
+  filtroOpcoes.innerHTML = "";
+  paisesSet.forEach(pais => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" value="${pais}"> ${pais}`;
+    filtroOpcoes.appendChild(label);
+  });
+
+  // Reaplicar eventos do filtro
+  const checkboxes = filtroOpcoes.querySelectorAll("input[type='checkbox']");
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => {
+      const selecionados = Array.from(checkboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+      document.querySelectorAll(".destino").forEach(destino => {
+        const pais = destino.getAttribute("data-pais");
+        destino.style.display =
+          selecionados.length === 0 || selecionados.includes(pais)
+            ? "block"
+            : "none";
+      });
     });
   });
+}
+
+// 🔹 Botão de filtro
+filtroBtn.addEventListener("click", () => {
+  filtroOpcoes.classList.toggle("ativo");
 });
 
 // Fecha dropdown ao clicar fora
@@ -77,44 +106,5 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// 🔹 Elementos do painel
-const painelBtn = document.getElementById("painelBtn");
-const loginBtn = document.getElementById("loginBtn");
-
-// 🔹 Atualizar onAuthStateChanged para mostrar/esconder painel
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Usuário logado
-    if (painelBtn) painelBtn.style.display = "inline-block";
-    if (loginBtn) loginBtn.style.display = "none";
-    
-    // Só cria o botão de logout se ainda não existir
-    if (!document.querySelector(".logout-btn")) {
-      const logoutBtn = document.createElement("button");
-      logoutBtn.textContent = "Logout";
-      logoutBtn.classList.add("logout-btn");
-      logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-        // Restaurar estado original
-        if (painelBtn) painelBtn.style.display = "none";
-        if (loginBtn) loginBtn.style.display = "inline-block";
-        logoutBtn.remove();
-      });
-
-      // Adicionar após o painel btn
-      if (painelBtn && painelBtn.parentNode) {
-        painelBtn.parentNode.appendChild(logoutBtn);
-      }
-    }
-  } else {
-    // Usuário não logado
-    if (painelBtn) painelBtn.style.display = "none";
-    if (loginBtn) loginBtn.style.display = "inline-block";
-    
-    // Remover botão de logout se existir
-    const existingLogoutBtn = document.querySelector(".logout-btn");
-    if (existingLogoutBtn) {
-      existingLogoutBtn.remove();
-    }
-  }
-});
+// Chama função para carregar destinos
+carregarDestinos();

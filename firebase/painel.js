@@ -1,60 +1,20 @@
-// Importações Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+// painel.js
+import { auth, dbRealtime } from './config.js';
 import { 
-    getAuth, 
-    onAuthStateChanged, 
-    signOut, 
-    updateEmail, 
+    onAuthStateChanged,
+    signOut,
+    updateEmail,
     updatePassword, 
     reauthenticateWithCredential,
     EmailAuthProvider,
-    connectAuthEmulator,
-    deleteUser
+    deleteUser 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { 
-    getDatabase, 
-    ref, 
-    get, 
-    set, 
-    remove,
-    connectDatabaseEmulator,
-    query,
-    orderByChild,
-    equalTo
+    ref,
+    get,
+    set,
+    remove
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-import {
-    getFirestore,
-    collection,
-    query as firestoreQuery,
-    where,
-    getDocs,
-    connectFirestoreEmulator
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-// Configuração Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyD5QDVLvFD3pQNHctIZWLYhc5G5RdOEf08",
-    authDomain: "mundo-na-mochila-89257.firebaseapp.com",
-    databaseURL: "https://mundo-na-mochila-89257-default-rtdb.firebaseio.com",
-    projectId: "mundo-na-mochila-89257",
-    storageBucket: "mundo-na-mochila-89257.firebasestorage.app",
-    messagingSenderId: "172465630207",
-    appId: "1:172465630207:web:1e47669ca76df6044cd5ca",
-    measurementId: "G-YBKG3VSW9F"
-};
-
-// Inicialização Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const firestore = getFirestore(app);
-
-// Conectar aos emuladores se estiver em localhost
-if (location.hostname === "localhost") {
-    connectAuthEmulator(auth, "http://localhost:9099");
-    connectDatabaseEmulator(db, "localhost", 9000);
-    connectFirestoreEmulator(firestore, "localhost", 8080);
-}
 
 // Elementos do DOM
 const loadingIndicator = document.getElementById('loadingIndicator');
@@ -88,6 +48,7 @@ onAuthStateChanged(auth, async (user) => {
         welcomeText.textContent = `Olá, ${user.email}!`;
         await loadUserData();
         await loadAccountStats();
+        renderAdminButton();
     } else {
         // Redirecionar para login se não autenticado
         window.location.href = "login.html";
@@ -112,7 +73,7 @@ async function loadUserData() {
         errorMessage.style.display = 'none';
         painelForm.style.display = 'none';
         
-        const userRef = ref(db, `usuarios/${currentUser.uid}`);
+        const userRef = ref(dbRealtime, `usuarios/${currentUser.uid}`);
         const snapshot = await get(userRef);
         
         if (snapshot.exists()) {
@@ -149,50 +110,34 @@ async function loadUserData() {
 
 // Carregar estatísticas da conta
 async function loadAccountStats() {
-    try {
-        // Data de criação da conta
-        const memberSince = currentUser.metadata.creationTime;
-        document.getElementById('memberSince').textContent = 
-            new Date(memberSince).toLocaleDateString('pt-BR');
-        
-        // Contar posts do usuário em todas as coleções de posts
-        let totalPosts = 0;
-        let totalComments = 0;
-        
-        // Buscar posts em diferentes destinos
-        const postCollections = ['posts_rio', 'posts_geral', 'posts']; // Adicione outras conforme necessário
-        
-        for (const collectionName of postCollections) {
-            try {
-                const postsQuery = firestoreQuery(
-                    collection(firestore, collectionName),
-                    where('uid', '==', currentUser.uid)
-                );
-                const postsSnapshot = await getDocs(postsQuery);
-                totalPosts += postsSnapshot.size;
-                
-                // Contar comentários em cada post
-                for (const postDoc of postsSnapshot.docs) {
-                    const commentsQuery = firestoreQuery(
-                        collection(firestore, collectionName, postDoc.id, 'comments'),
-                        where('uid', '==', currentUser.uid)
-                    );
-                    const commentsSnapshot = await getDocs(commentsQuery);
-                    totalComments += commentsSnapshot.size;
-                }
-            } catch (error) {
-                console.log(`Coleção ${collectionName} não encontrada ou erro:`, error);
-            }
-        }
-        
-        document.getElementById('postsCount').textContent = totalPosts;
-        document.getElementById('commentsCount').textContent = totalComments;
-        
-        accountStats.style.display = 'block';
-        
-    } catch (error) {
-        console.error('Erro ao carregar estatísticas:', error);
+  try {
+    // Data de criação da conta
+    const memberSince = currentUser.metadata.creationTime;
+    document.getElementById('memberSince').textContent = 
+      new Date(memberSince).toLocaleDateString('pt-BR');
+
+    // Referência para estatísticas do usuário no Realtime Database
+    const userStatsRef = ref(dbRealtime, `usuarios/${currentUser.uid}/stats`);
+    const snapshot = await get(userStatsRef);
+
+    let totalPosts = 0;
+    let totalComments = 0;
+
+    if (snapshot.exists()) {
+      const stats = snapshot.val();
+      totalPosts = stats.posts || 0;
+      totalComments = stats.comments || 0;
     }
+
+    // Atualiza o painel
+    document.getElementById('postsCount').textContent = totalPosts;
+    document.getElementById('commentsCount').textContent = totalComments;
+
+    accountStats.style.display = 'block';
+
+  } catch (error) {
+    console.error('Erro ao carregar estatísticas:', error);
+  }
 }
 
 // Salvar alterações
@@ -217,18 +162,19 @@ painelForm.addEventListener('submit', async (e) => {
             throw new Error('Preencha todos os campos obrigatórios');
         }
         
-        // Validar senha se fornecida
-        if (novaSenha || confirmarSenha) {
-            if (!senhaAtual) {
-                throw new Error('Digite sua senha atual para alterar a senha');
-            }
-            if (novaSenha !== confirmarSenha) {
-                throw new Error('As novas senhas não coincidem');
-            }
-            if (novaSenha.length < 6) {
-                throw new Error('A nova senha deve ter pelo menos 6 caracteres');
-            }
-        }
+        // Validações
+        if (!nome || !sobrenome || !pais || !email)
+            throw new Error('Preencha todos os campos obrigatórios');
+
+        if ((novaSenha || confirmarSenha) && !senhaAtual)
+            throw new Error('Digite sua senha atual para alterar a senha');
+
+        if (novaSenha !== confirmarSenha)
+            throw new Error('As novas senhas não coincidem');
+
+        if (novaSenha && novaSenha.length < 6)
+            throw new Error('A nova senha deve ter pelo menos 6 caracteres');
+        
         
         // Atualizar email se mudou
         if (email !== currentUser.email) {
@@ -262,10 +208,12 @@ painelForm.addEventListener('submit', async (e) => {
             pais,
             email,
             newsletter,
+            termos: "true",
+            tipo: originalData.tipo,
             updated_at: new Date().toISOString()
         };
         
-        await set(ref(db, `usuarios/${currentUser.uid}`), userData);
+        await set(ref(dbRealtime, `usuarios/${currentUser.uid}`), userData);
         
         // Limpar campos de senha
         senhaAtualInput.value = '';
@@ -316,15 +264,11 @@ window.confirmDeleteAccount = function() {
     );
     
     if (confirmed) {
-        const doubleConfirm = prompt(
-            'Para confirmar, digite "EXCLUIR" (em maiúsculas):'
-        );
-        
-        if (doubleConfirm === 'EXCLUIR') {
+        const doubleConfirm = prompt('Para confirmar, digite "EXCLUIR" (em maiúsculas):');
+        if (doubleConfirm === 'EXCLUIR')
             deleteUserAccount();
-        } else {
+        else
             alert('Exclusão cancelada. Texto não confere.');
-        }
     }
 };
 
@@ -335,16 +279,15 @@ async function deleteUserAccount() {
         
         // Pedir senha para reautenticação
         const password = prompt('Digite sua senha para confirmar a exclusão:');
-        if (!password) {
+        if (!password)
             throw new Error('Senha necessária para exclusão');
-        }
         
         // Reautenticar
         const credential = EmailAuthProvider.credential(currentUser.email, password);
         await reauthenticateWithCredential(currentUser, credential);
         
         // Remover dados do Realtime Database
-        await remove(ref(db, `usuarios/${currentUser.uid}`));
+        await remove(ref(dbRealtime, `usuarios/${currentUser.uid}`));
         
         // Remover posts do usuário (seria ideal ter uma cloud function para isso)
         // Por agora, apenas deletamos o usuário do Auth
@@ -452,3 +395,65 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+async function renderAdminButton() {
+    // Remove botão existente, se houver
+    const existingBtn = document.getElementById('promoteUserBtn');
+    if (existingBtn) existingBtn.remove();
+
+    // Só superAdmin vê o botão
+    if (originalData.tipo === 'superAdmin') {
+        // Esconder estatísticas para superAdmin
+        if (accountStats) accountStats.style.display = 'none';
+
+        // Criar botão Promover usuário
+        const promoteBtn = document.createElement('button');
+        promoteBtn.id = 'promoteUserBtn';
+        promoteBtn.type = 'button';
+        promoteBtn.textContent = 'Promover usuário';
+        promoteBtn.className = 'save-btn';
+        promoteBtn.style.marginLeft = '10px';
+
+        const formActions = document.querySelector('.form-actions');
+        if (formActions) formActions.appendChild(promoteBtn);
+
+        // Evento do botão
+        promoteBtn.addEventListener('click', async () => {
+            const email = prompt('Digite o email do usuário que deseja promover:');
+            if (!email) return alert('Email necessário');
+
+            try {
+                // Buscar usuário no Realtime Database pelo email
+                const usuariosRef = ref(dbRealtime, 'usuarios');
+                const snapshot = await get(usuariosRef);
+                if (!snapshot.exists()) return alert('Nenhum usuário encontrado.');
+
+                const usuarios = snapshot.val();
+                let userToPromote = null;
+
+                // Encontrar usuário pelo email
+                for (const uid in usuarios) {
+                    if (usuarios[uid].email === email) {
+                        userToPromote = { uid, ...usuarios[uid] };
+                        break;
+                    }
+                }
+
+                if (!userToPromote) return alert('Usuário não encontrado.');
+
+                // Atualizar tipo para 'admin'
+                await set(ref(dbRealtime, `usuarios/${userToPromote.uid}`), {
+                    ...userToPromote,
+                    tipo: 'admin',
+                    updated_at: new Date().toISOString()
+                });
+
+                alert(`Usuário ${email} promovido para admin com sucesso!`);
+
+            } catch (error) {
+                console.error('Erro ao promover usuário:', error);
+                alert('Erro ao promover usuário. Veja o console para detalhes.');
+            }
+        });
+    }
+}
