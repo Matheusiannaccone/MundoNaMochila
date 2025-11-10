@@ -123,9 +123,18 @@ window.converterMoeda = async function() {
   }
 
   try {
-    const res = await fetch(`https://api.exchangerate.host/convert?from=${de}&to=${para}&amount=${valor}`);
+    // URL que funciona no localhost
+    const url = `https://api.exchangerate-api.com/v4/latest/${de}`;
+    const res = await fetch(url);
     const data = await res.json();
-    resultadoEl.textContent = `Valor convertido: ${data.result.toFixed(2)} ${para}`;
+
+    if (!data.rates || !data.rates[para]) {
+      resultadoEl.textContent = "Erro ao obter taxa de câmbio.";
+      return;
+    }
+
+    const resultado = valor * data.rates[para];
+    resultadoEl.textContent = `Valor convertido: ${resultado.toFixed(2)} ${para}`;
   } catch (err) {
     resultadoEl.textContent = "Erro ao converter moeda.";
     console.error(err);
